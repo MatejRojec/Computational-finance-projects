@@ -5,8 +5,8 @@ K = 10;
 a = 0;
 S_star = 15;
 T = 1;
-NS = 50;
-Nt = 10000;
+NS = 100;
+Nt = 1000;
 hS = (S_star-a)/NS;
 ht = T/Nt;
 
@@ -62,9 +62,37 @@ for j=1:Nt-1
     grid(j+1, 2:end-1) = u_solution;
 end
 
+% Create grid
+[S, t] = meshgrid(lS, lt);
+t = T - t;
+
+% Compute Black-Scholes formula
+d1 = (log(S/K) + (r + 0.5*sigma^2)*(T-t)) ./ (sigma.*sqrt(T-t));
+d2 = d1 - sigma.*sqrt(T-t);
+Nd1 = normcdf(d1);
+Nd2 = normcdf(d2);
+Nmd1 = normcdf(-d1);
+Nmd2 = normcdf(-d2);
+call_price = S.*Nd1 - K*exp(-r*(T-t)).*Nd2;
+put_price = K*exp(-r*(T-t)).*Nmd2 - S.*Nmd1;
+
+error = abs(call_price - grid);
 lT = 1+zeros(1,Nt);
 figure(1)
 surf(lS,lT-lt,grid, 'LineStyle','none', 'FaceColor','flat')
 xlabel('S')
 ylabel('t')
 title('European call option, V(S,t)')
+
+figure(2)
+surf(S,t,call_price, 'LineStyle','none', 'FaceColor','flat')
+xlabel('S')
+ylabel('t')
+title('European call option exact, V(S,t)')
+
+figure(3)
+surf(S,t,error, 'LineStyle','none', 'FaceColor','flat')
+xlabel('S')
+ylabel('t')
+title('European call option CN, V(S,t) error')
+max(max(error))
