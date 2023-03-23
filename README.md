@@ -1,4 +1,4 @@
-# Statistical-methods-project
+# Computational-methods-in-finance-project
 
 Project for computation methods in finance.
 
