@@ -4,8 +4,8 @@ K = 10;
 a = 0;
 S_star = 15;
 T = 1;
-NS = 100;
-Nt = 1000;
+NS = 50;
+Nt = 10000;
 hS = (S_star-a)/NS;
 ht = T/Nt;
 
@@ -14,9 +14,9 @@ lS = linspace(a,S_star,NS);
 lt = linspace(0,T,Nt);
 grid = meshgrid(lS,lt);
 
-u0 = @(S)(max(S-10,0));
+u0 = @(S)(max(S-K,0));
 ua = 0;
-ub = @(t)(15 - 10*exp(-r*t));
+ub = @(t)(S_star - K*exp(-r*t));
 
 
 grid(1,:) = u0(lS);
@@ -49,7 +49,7 @@ figure(1)
 surf(lS,lT-lt,grid, 'LineStyle','none', 'FaceColor','flat')
 xlabel('S')
 ylabel('t')
-title('European call option, V(S,t)')
+title('European call option, V(S,t) explicit solutions')
 
 figure(2)
 surf(S,t,call_price, 'LineStyle','none', 'FaceColor','flat')
