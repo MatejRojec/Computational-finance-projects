@@ -6,7 +6,7 @@ K = 10;
 a = 0;
 S_star = 15;
 T = 1;
-NS = 600;
+NS = 300;
 Nt = 10000;
 hS = (S_star-a)/NS;
 ht = T/Nt;
@@ -18,7 +18,7 @@ grid = meshgrid(lS,lt);
 % Initial conditions
 u0 = @(S)(max(S-K,0));
 ua = 0;
-ub = @(t)(15 - 10*exp(-r*t));
+ub = @(t)(S_star - K*exp(-r*t));
 grid(1,:) = u0(lS);
 grid(:,1) = ua;
 grid(:,end) = ub(lt);
@@ -78,7 +78,7 @@ figure(1)
 surf(lS,lT-lt,grid, 'LineStyle','none', 'FaceColor','flat')
 xlabel('S')
 ylabel('t')
-title('European call option, V(S,t)')
+title('European call option, V(S,t) CN solution')
 
 figure(2)
 surf(S,t,call_price, 'LineStyle','none', 'FaceColor','flat')
