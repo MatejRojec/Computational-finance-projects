@@ -4,7 +4,7 @@ K = 10;
 a = 0;
 S_star = 15;
 T = 1;
-NS = 200;
+NS = 300;
 Nt = 10000;
 hS = (S_star-a)/NS;
 ht = T/Nt;
@@ -51,6 +51,7 @@ xlabel('S')
 ylabel('t')
 title('European call option, V(S,t) explicit solutions')
 
+
 figure(2)
 surf(S,t,call_price, 'LineStyle','none', 'FaceColor','flat')
 xlabel('S')
@@ -61,5 +62,5 @@ figure(3)
 surf(S,t,error, 'LineStyle','none', 'FaceColor','flat')
 xlabel('S')
 ylabel('t')
-title('European call option exact, V(S,t) error')
+title('European call option, V(S,t) explicit method error')
 max(max(error))

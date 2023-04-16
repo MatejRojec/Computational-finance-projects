@@ -1,0 +1,22 @@
+r = 0.06;
+sigma = 0.3;
+K = 10; 
+S_star = 15;
+T = 1;
+NS = 300;
+Nt = 10000;
+
+NS = [10 20 40 80 160];
+Nt = [1000 2000 3000 4000 5000];
+
+Values = zeros()
+for i =1:length(NS)
+    for j = 1:length(Nt)
+end
+explicit(r, sigma, T, K, S_star, A(:), B(:), "put", 1, 8);
+%CN(r, sigma, T, K, S_star, NS, Nt, "put", 1, 8);
+
+
+
+
+
