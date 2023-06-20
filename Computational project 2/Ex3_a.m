@@ -17,7 +17,7 @@ Z=normal_generator(N,m1,m2);
 S(1)=x0;
 B = [0; cumsum(Z')] *sqrt(h);
 for j=1:N
-  S(j+1) = x0 * exp((mu - (sigma^2)/2) * lt(j) + sigma*B(j+1));
+  S(j+1) = x0 * exp((mu - (sigma^2)/2) * lt(j+1) + sigma*B(j+1));
 end
 
 figure(1)
