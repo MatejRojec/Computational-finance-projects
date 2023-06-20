@@ -9,7 +9,7 @@ m1 = 0.2521;
 m2 = 0.14324;
 
 h_values = 0.005 * (1 / 2).^ (0:3);
-num_simulations = 10000;
+num_simulations = 500000;
 
 orders_strong_EM = zeros(size(h_values));
 orders_weak_EM = zeros(size(h_values));
