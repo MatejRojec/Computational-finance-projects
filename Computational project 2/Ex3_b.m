@@ -1,3 +1,6 @@
+clear;
+clc;
+
 T=1;
 x0 = 10;
 mu = 0.5;
@@ -31,8 +34,8 @@ for i = 1:length(h_values)
     history_S = zeros(1, num_simulations);
 
     for j = 1:num_simulations
-        m1 = m1 * 0.97;
-        m2 = m2 * 0.97;
+        m1 = m1 - m1/num_simulations;
+        m2 = m2 - m2/num_simulations;
 
         Z=normal_generator(N,m1,m2);
         [lt,X_EM] = Euler_Maruyama_method(a,b,T,N,x0,m1,m2);
@@ -51,10 +54,10 @@ for i = 1:length(h_values)
         history_S(j) = S(end);
     end
     disp(i)
-    errors_Milstein_weak(i) = abs(mean(errors_EM_w - history_S));
-    errors_EM_weak(i) = abs(mean(errors_Milstein_w - history_S));
+    errors_Milstein_weak(i) = abs(mean(errors_Milstein_w - history_S));
+    errors_EM_weak(i) = abs(mean(errors_EM_w - history_S));
     errors_Milstein_strong(i) = mean(abs(errors_Milstein_w - history_S));
-    errors_EM_strong(i) = mean(abs(errors_Milstein_w - history_S));
+    errors_EM_strong(i) = mean(abs(errors_EM_w - history_S));
 end
 
 errors_log_Milstein_strong = log(errors_Milstein_strong);
@@ -67,3 +70,59 @@ coefficients_Milstein_strong = polyfit(log_h_values, errors_log_Milstein_strong,
 coefficients_EM_strong = polyfit(log_h_values, errors_log_EM_strong, 1)
 coefficients_Milstein_weak = polyfit(log_h_values, errors_log_Milstein_weak, 1)
 coefficients_EM_weak = polyfit(log_h_values, errors_log_EM_weak, 1)
+
+x = linspace(min(log_h_values), max(log_h_values), 100);
+
+fit_Milstein_strong = polyval(coefficients_Milstein_strong, x);
+fit_EM_strong = polyval(coefficients_EM_strong, x);
+
+fit_Milstein_weak = polyval(coefficients_Milstein_weak, x);
+fit_EM_weak = polyval(coefficients_EM_weak, x);
+
+% Create separate figures as tiles for each fit
+figure;
+tiledlayout(2, 2);
+
+nexttile;
+scatter(log_h_values, errors_log_Milstein_strong, 'DisplayName', 'Milstein Strong');
+hold on;
+plot(x, fit_Milstein_strong, 'DisplayName', 'Milstein Strong Fit');
+xlabel('log(h) values');
+ylabel('Errors');
+title('Milstein Strong Fit');
+legend('Location', 'best');
+
+nexttile;
+scatter(log_h_values, errors_log_EM_strong, 'DisplayName', 'EM Strong');
+hold on;
+plot(x, fit_EM_strong, 'DisplayName', 'EM Strong Fit');
+xlabel('log(h) values');
+ylabel('Errors');
+title('EM Strong Fit');
+legend('Location', 'best');
+
+nexttile;
+scatter(log_h_values, errors_log_Milstein_weak, 'DisplayName', 'Milstein Weak');
+hold on;
+plot(x, fit_Milstein_weak, 'DisplayName', 'Milstein Weak Fit');
+xlabel('log(h) values');
+ylabel('Errors');
+title('Milstein Weak Fit');
+legend('Location', 'best');
+
+nexttile;
+scatter(log_h_values, errors_log_EM_weak, 'DisplayName', 'EM Weak');
+hold on;
+plot(x, fit_EM_weak, 'DisplayName', 'EM Weak Fit');
+xlabel('log(h) values');
+ylabel('Errors');
+title('EM Weak Fit');
+legend('Location', 'best');
+
+% Adjust the layout and spacing of the tiles
+padding = 0.03;
+margin = 0.05;
+tiledlayout.Padding = 'compact';
+tiledlayout.TileSpacing = 'compact';
+tiledlayout.Padding = padding;
+tiledlayout.Margin = margin;
